@@ -7,7 +7,7 @@ import net.sourceforge.wurfl.core.cache.LRUMapCacheProvider
 /**
   * Created by quanpv on 5/9/16.
   */
-class UserAgentParser (userAgent:String){
+class UserAgentParser(userAgent: String) {
 
   val wurflWrapper = new Wurfl(new GeneralWURFLEngine("file:///home/quanpv/Downloads/wurfl.zip"))
 
@@ -32,49 +32,109 @@ class UserAgentParser (userAgent:String){
     "resolution_width",
     "xhtml_support_level")
 
-  var headers = Map("Accept-Datetime"->"Thu, 31 May 2007 20:35:00 GMT")
-  headers += ("Content-Type"-> "application/x-www-form-urlencoded")
+  var headers = Map("Accept-Datetime" -> "Thu, 31 May 2007 20:35:00 GMT")
+  headers += ("Content-Type" -> "application/x-www-form-urlencoded")
 
   var device = wurflWrapper.deviceForHeaders(userAgent, headers)
 
-  def get_device_id():String={
-    return device.id
+  def get_device_id(): String = {
+    try {
+      return device.id
+    } catch {
+      case e: Exception => {
+        return "-1"
+      }
+    }
   }
 
-  def get_device_os():String={
-    return device.capabilities("device_os")
+  def get_device_os(): String = {
+    try {
+      return device.capabilities("device_os")
+    } catch {
+      case e: Exception => {
+        return "-1"
+      }
+    }
   }
 
-  def get_os_version():String={
-    return device.capabilities("device_os_version")
+  def get_os_version(): String = {
+    try {
+      return device.capabilities("device_os_version")
+    } catch {
+      case e: Exception => {
+        return "-1"
+      }
+    }
   }
 
-  def get_model_name():String={
-    return device.capabilities("model_name")
+  def get_model_name(): String = {
+    try {
+      return device.capabilities("model_name")
+    } catch {
+      case e: Exception => {
+        return "-1"
+      }
+    }
   }
 
-  def get_brand_name():String={
-    return device.capabilities("brand_name")
+  def get_brand_name(): String = {
+    try {
+      return device.capabilities("brand_name")
+    } catch {
+      case e: Exception => {
+        return "-1"
+      }
+    }
   }
 
-  def is_wiless_device():Boolean={
-    return device.capabilities("is_wireless_device").toBoolean
+  def is_wiless_device(): Boolean = {
+    try {
+      return device.capabilities("is_wireless_device").toBoolean
+    } catch {
+      case e: Exception => {
+        return false
+      }
+    }
   }
 
-  def is_actual_device_root():Boolean={
-    return device.isActualDeviceRoot
+  def is_actual_device_root(): Boolean = {
+    try {
+      return device.isActualDeviceRoot
+    } catch {
+      case e: Exception => {
+        return false
+      }
+    }
   }
 
-  def get_resolution_height():Int={
-    return device.capabilities("resolution_height").toInt
+  def get_resolution_height(): Int = {
+    try {
+      return device.capabilities("resolution_height").toInt
+    } catch {
+      case e: Exception => {
+        return -1
+      }
+    }
   }
 
-  def get_resolution_width():Int={
-    return device.capabilities("resolution_width").toInt
+  def get_resolution_width(): Int = {
+    try {
+      return device.capabilities("resolution_width").toInt
+    } catch {
+      case e: Exception => {
+        return -1
+      }
+    }
   }
 
-  def can_assign_phone_number():Boolean={
-    return  device.capabilities("can_assign_phone_number").toBoolean
+  def can_assign_phone_number(): Boolean = {
+    try {
+      return device.capabilities("can_assign_phone_number").toBoolean
+    } catch {
+      case e: Exception => {
+        return false
+      }
+    }
   }
 
 }
