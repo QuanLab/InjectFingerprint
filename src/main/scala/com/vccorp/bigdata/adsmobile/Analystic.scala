@@ -1,6 +1,7 @@
 package com.vccorp.bigdata.adsmobile
 
 import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.SQLContext
 
 
 object LogCLickAnalystic {
@@ -10,9 +11,14 @@ object LogCLickAnalystic {
     val conf = new SparkConf().setAppName("LogFingerspint").setMaster("local[*]")
     val sc = new SparkContext(conf)
 
+    val sqlContext = new SQLContext(sc)
+
+    // this is used to implicitly convert an RDD to a DataFrame.
+    import sqlContext.implicits._
+
     val rdd = sc.textFile("file:////home/quanpv/Downloads/LogClick2/")
 
-    rdd.map(x => (x, 1))
+//    rdd.map(x => (x, 1)).toDF().show(5000)
 
     val click = "2016-04-26 11:01:09\t2016-01-02 12:48:37\t1717137171897288259\t\t113.187.3.108\te52877fa-60f4-5ae6-7cdb-4ede962e9996\t373040\tm.cafef.vn\t/nha-1-ty-dong-cua-dai-gia-le-thanh-than-tha-lai-it-con-hon-chet-20160425104108899.chn\t6869\t1074694\t-1\tMozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 625H) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537\t-1\t396x660\tNull\t-1\tmobilead"
 
