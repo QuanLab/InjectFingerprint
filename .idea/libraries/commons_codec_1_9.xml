@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="commons-codec-1.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/LibThift/commons-codec-1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/commons-logging-1.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/httpclient-4.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/httpcore-4.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/junit-4.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/libthrift-0.9.3.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/log4j-1.2.14.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/servlet-api-2.5.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/slf4j-api-1.5.8.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/slf4j-api-1.7.12.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/LibThift/slf4j-log4j12-1.5.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

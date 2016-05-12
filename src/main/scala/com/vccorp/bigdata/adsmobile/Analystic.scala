@@ -1,26 +1,24 @@
 package com.vccorp.bigdata.adsmobile
 
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.SQLContext
+//import org.apache.spark.{SparkConf, SparkContext}
+//import org.apache.spark.sql.SQLContext
 
 
 object LogCLickAnalystic {
 
   def main(arg: Array[String]): Unit = {
-
-    val conf = new SparkConf().setAppName("LogFingerspint").setMaster("local[*]")
-    val sc = new SparkContext(conf)
-
-    val sqlContext = new SQLContext(sc)
-
-    // this is used to implicitly convert an RDD to a DataFrame.
-    import sqlContext.implicits._
-
-    val rdd = sc.textFile("file:////home/quanpv/Downloads/LogClick2/")
-
+//
+//    val conf = new SparkConf().setAppName("LogFingerspint").setMaster("local[*]")
+//    val sc = new SparkContext(conf)
+//    val sqlContext = new SQLContext(sc)
+//
+//     //this is used to implicitly convert an RDD to a DataFrame.
+//    import sqlContext.implicits._
+//
+//    val rdd = sc.textFile("file:////home/quanpv/Downloads/LogClick2/")
 //    rdd.map(x => (x, 1)).toDF().show(5000)
 
-    val click = "2016-04-26 11:01:09\t2016-01-02 12:48:37\t1717137171897288259\t\t113.187.3.108\te52877fa-60f4-5ae6-7cdb-4ede962e9996\t373040\tm.cafef.vn\t/nha-1-ty-dong-cua-dai-gia-le-thanh-than-tha-lai-it-con-hon-chet-20160425104108899.chn\t6869\t1074694\t-1\tMozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 625H) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537\t-1\t396x660\tNull\t-1\tmobilead"
+    val click = "2016-04-26 17:18:42\t2016-03-15 15:01:13\t1280288731963305729\t\t113.190.100.33\ta1dd3d6b-e7a4-5e43-488b-ef03416b43c0\t-1\t-1\t-1\t-1\t-1\t-1\tMozilla/5.0 (Linux; U; Android 4.1.2; vi-vn; GT-I8552 Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30\thttps://play.google.com/store/apps/details?id=haitacbongdem.vn.msh\t480x800\tNull\tgoogle,1,shg_HTBD_And_store,,0fe265c35423bb3ee2e5950e61ef9195,haitacbongdem.vn.msh\tadn_mob"
 
     val mobileClickParser = new MobileClickParser(click)
 
@@ -37,7 +35,7 @@ object LogCLickAnalystic {
     println("brand_name               " + userAgentParser.get_brand_name())
     println("is_wireless_device       " + userAgentParser.is_wiless_device())
     println("is_actual_device_root    " + userAgentParser.is_actual_device_root())
-    println("ip_address               " + mobileClickParser.get_ip_address())
+    //println("ip_address               " + mobileClickParser.get_ip_address())
     println("resolution_height        " + userAgentParser.get_resolution_height())
     println("resolution_width         " + userAgentParser.get_resolution_width())
     println("can_assign_phone_number: " + userAgentParser.can_assign_phone_number())
