@@ -26,4 +26,12 @@ class MobileClickParser(log_mobile_click: String) {
     return splits(4)
   }
 
+  def get_game_id(): String = {
+
+    val component = splits(16)
+    println(component)
+    val split2 = component.split(",")(5)
+    return split2
+  }
+
 }
