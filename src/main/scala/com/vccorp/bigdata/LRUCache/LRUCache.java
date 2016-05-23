@@ -7,6 +7,7 @@ import java.util.HashMap;
  */
 
 public class LRUCache {
+
     int capacity;
     HashMap<String, UserAgent> map = new HashMap<String, UserAgent>();
     UserAgent head=null;

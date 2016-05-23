@@ -8,7 +8,7 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
 
-public class MultiplicationClient {
+public class MatchingCPIClient {
 
 	public static void main(String[] args) {
 
@@ -32,7 +32,6 @@ public class MultiplicationClient {
 
 		String userAgent="Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D201 Safari/9537.53";
 		String product = client.multiply(userAgent);
-		System.out.println("Received:" + product);
 		System.out.println("Parsed...............");
 		String[] splits=product.split("\t");
 

@@ -7,9 +7,9 @@ import net.sourceforge.wurfl.core.cache.LRUMapCacheProvider
 /**
   * Created by quanpv on 5/9/16.
   */
-class UserAgentParser(userAgentString: String) {
+class UserAgentParser(userAgent: String) {
 
-  val userAgentHelper = new UserAgentHelper(userAgentString)
+  val userAgentHelper = new UserAgentHelper((userAgent));
 
   val wurflWrapper = new Wurfl(new GeneralWURFLEngine("file:///home/quanpv/Downloads/wurfl.zip"))
 
@@ -37,9 +37,9 @@ class UserAgentParser(userAgentString: String) {
   var headers = Map("Accept-Datetime" -> "Thu, 31 May 2007 20:35:00 GMT")
   headers += ("Content-Type" -> "application/x-www-form-urlencoded")
 
-  var device = wurflWrapper.deviceForHeaders(userAgentString, headers)
+  var device = wurflWrapper.deviceForHeaders(userAgent, headers)
 
-  def get_device_id(): String = {
+  def getDeviceId(): String = {
     try {
       return device.id
     } catch {
@@ -49,7 +49,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_device_os(): String = {
+  def getOsType(): String = {
     try {
       return device.capabilities("device_os")
     } catch {
@@ -59,7 +59,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_os_version(): String = {
+  def getOsVersion(): String = {
     try {
       var version = userAgentHelper.getOsVersion();
       if(!version.trim().equals("")){
@@ -74,7 +74,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_model_name(): String = {
+  def getModelName(): String = {
     try {
       return device.capabilities("model_name")
     } catch {
@@ -84,7 +84,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_brand_name(): String = {
+  def getBrandName(): String = {
     try {
       return device.capabilities("brand_name")
     } catch {
@@ -94,7 +94,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def is_wiless_device(): Boolean = {
+  def isWilessDevice(): Boolean = {
     try {
       return device.capabilities("is_wireless_device").toBoolean
     } catch {
@@ -104,7 +104,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def is_actual_device_root(): Boolean = {
+  def isActualDeviceRoot(): Boolean = {
     try {
       return device.isActualDeviceRoot
     } catch {
@@ -114,7 +114,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_resolution_height(): Int = {
+  def getResolutionHeight(): Int = {
     try {
       return device.capabilities("resolution_height").toInt
     } catch {
@@ -124,7 +124,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def get_resolution_width(): Int = {
+  def getResolutionWidth(): Int = {
     try {
       return device.capabilities("resolution_width").toInt
     } catch {
@@ -134,7 +134,7 @@ class UserAgentParser(userAgentString: String) {
     }
   }
 
-  def can_assign_phone_number(): Boolean = {
+  def canAssignPhoneNumber(): Boolean = {
     try {
       return device.capabilities("can_assign_phone_number").toBoolean
     } catch {
@@ -142,6 +142,11 @@ class UserAgentParser(userAgentString: String) {
         return false
       }
     }
+  }
+
+  def getUserAgentParsedToString() :String = {
+
+    return getDeviceId() + "\t" + getOsType() + "\t" + getOsVersion() + "\t" + getModelName() + "\t" + getBrandName()
   }
 
 }

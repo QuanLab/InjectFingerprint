@@ -2,18 +2,13 @@ package com.vccorp.bigdata.ipparser;
 
 import com.mysql.jdbc.PreparedStatement;
 import org.apache.commons.net.util.SubnetUtils;
-import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.util.Vector;
 
-/**
- * Created by quanpv on 5/21/16.
- */
 
 public class ISP {
 
-//    final static Logger logger = Logger.getLogger(ISP.class);
     Vector vectorCarrier;
 
     public ISP(){
@@ -40,7 +35,6 @@ public class ISP {
             };
 
         }
-        System.out.println("Not found ISP for this ip: " + ipAddress);
         return null;
     }
 
@@ -67,7 +61,7 @@ public class ISP {
             }
 
         }catch (Exception e){
-//            logger.error(e);
+            System.out.println("Cannot get data ISP: " + e);
         }
 
         DBHelper.closeConnection();

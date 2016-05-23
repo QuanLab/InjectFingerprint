@@ -1,5 +1,7 @@
 package com.vccorp.bigdata.ipparser;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,7 +30,6 @@ public class DBHelper {
 
         } catch (Exception e) {
             System.out.println("Error: " + e);
-//            logger.error(e.getMessage());
         }
     }
 
@@ -42,10 +43,6 @@ public class DBHelper {
                 System.out.println("Cannot close connection because: " + e);
             }
         }
-    }
-
-    public static void main(String [] args){
-        connectDB();
     }
 
 }
