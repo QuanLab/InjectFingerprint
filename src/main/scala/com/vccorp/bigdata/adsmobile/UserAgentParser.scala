@@ -7,7 +7,9 @@ import net.sourceforge.wurfl.core.cache.LRUMapCacheProvider
 /**
   * Created by quanpv on 5/9/16.
   */
-class UserAgentParser(userAgent: String) {
+class UserAgentParser(userAgentString: String) {
+
+  val userAgentHelper = new UserAgentHelper(userAgentString)
 
   val wurflWrapper = new Wurfl(new GeneralWURFLEngine("file:///home/quanpv/Downloads/wurfl.zip"))
 
@@ -35,7 +37,7 @@ class UserAgentParser(userAgent: String) {
   var headers = Map("Accept-Datetime" -> "Thu, 31 May 2007 20:35:00 GMT")
   headers += ("Content-Type" -> "application/x-www-form-urlencoded")
 
-  var device = wurflWrapper.deviceForHeaders(userAgent, headers)
+  var device = wurflWrapper.deviceForHeaders(userAgentString, headers)
 
   def get_device_id(): String = {
     try {
@@ -59,7 +61,12 @@ class UserAgentParser(userAgent: String) {
 
   def get_os_version(): String = {
     try {
-      return device.capabilities("device_os_version")
+      var version = userAgentHelper.getOsVersion();
+      if(!version.trim().equals("")){
+        return version
+      } else{
+        return device.capabilities("device_os_version")
+      }
     } catch {
       case e: Exception => {
         return "-1"

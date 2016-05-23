@@ -11,27 +11,44 @@ class MobileClickParser(log_mobile_click: String) {
   val splits = log_mobile_click.split("\t")
 
   def get_user_agent(): String = {
-    return splits(12)
+    try {
+      return splits(12)
+    }catch {
+      case e:Exception=>null
+    }
   }
 
   def get_request_time(): String = {
-    return splits(0)
+    try {
+      return splits(0)
+    }catch {
+      case e:Exception=>null
+    }
   }
 
   def get_cookie_create(): String = {
-    return splits(1)
+    try {
+      return splits(1)
+    }catch {
+      case e:Exception=> null
+    }
   }
 
   def get_ip_address(): String = {
-    return splits(4)
+    try {
+      return splits(4)
+    }catch {
+      case e:Exception => null
+    }
   }
 
   def get_game_id(): String = {
 
-    val component = splits(16)
-    println(component)
-    val split2 = component.split(",")(5)
-    return split2
+    try {
+      splits(16).split(",")(5)
+    }catch {
+      case e:Exception => null
+    }
   }
 
 }
