@@ -14,7 +14,7 @@ public class MatchingCPIClient {
 
 		try {
 			TTransport transport;
-			transport = new TSocket("localhost", 9090);
+			transport = new TSocket("localhost", 8888);
 			transport.open();
 
 			TProtocol protocol = new TBinaryProtocol(transport);
@@ -37,6 +37,28 @@ public class MatchingCPIClient {
 
 		for (String str:splits){
 			System.out.println(str);
+		}
+	}
+
+	public static String getUserAgentParsed(String userAgentString) throws TException{
+
+		try {
+			TTransport transport;
+			transport = new TSocket("localhost", 8888);
+			transport.open();
+
+			TProtocol protocol = new TBinaryProtocol(transport);
+			UserAgentService.Client client = new UserAgentService.Client(protocol);
+
+			String userAgentParsed = client.multiply(userAgentString);
+
+			transport.close();
+
+			return  userAgentParsed;
+
+		} catch (TException x) {
+			x.printStackTrace();
+			return null;
 		}
 	}
 }

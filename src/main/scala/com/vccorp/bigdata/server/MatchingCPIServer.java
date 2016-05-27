@@ -39,7 +39,7 @@ public class MatchingCPIServer {
 		
 		try {
 			
-			TServerTransport serverTransport = new TServerSocket(9090);
+			TServerTransport serverTransport = new TServerSocket(8888);
 			TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
 
 			System.out.println("Starting the server...");

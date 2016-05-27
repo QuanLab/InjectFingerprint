@@ -33,18 +33,26 @@ public class FPS {
 	int size;
 
 	public FPS(String value) {
-		this.isEmpty = true;
-		try {
-			URLDecoder.decode(value, "utf-8");
-		} catch (UnsupportedEncodingException e) {
 
-			e.printStackTrace();
+		size = 0;
+		this.isEmpty = true;
+
+		try {
+			decode(value);
+		} catch (Exception e) {
+			System.out.println("Cannot decode " + e);
 		}
-		String[] splits = value.split(";");
-		size = splits.length;
+
+		String[] splits = null;
+
+		if(value!=null){
+			splits= value.split(";");
+			size = splits.length;
+		}
+
 		if (size >= 16) {
 			try {
-				this.os_type = StringUtils.parseInt(splits[0]);
+				this.os_type = StringUtil.intStr(splits[0]);
 				this.os_version = splits[1];
 				this.manufacturer = splits[2];
 				this.device_model = splits[3];
@@ -59,9 +67,10 @@ public class FPS {
 				this.fingerprint = splits[12];
 				this.deviceid = splits[13];
 				this.sdkid = splits[14];
-				this.realdevice = StringUtils.parseInt(splits[15]);
+				this.realdevice = StringUtil.intStr(splits[15]);
+
 				try {
-					this.action = StringUtils.parseInt(splits[16]);
+					this.action = StringUtil.intStr(splits[16]);
 				} catch (Exception e) {
 					this.action = -1;
 				}
@@ -88,7 +97,7 @@ public class FPS {
 			return URLDecoder.decode(fpsreplace, "utf-8");
 		}catch (Exception e){
 //			logger.error("Cannot decode fps string: " + fpsreplace + " cause by" + e);
-			return null;
+			return "-1";
 		}
 	}
 

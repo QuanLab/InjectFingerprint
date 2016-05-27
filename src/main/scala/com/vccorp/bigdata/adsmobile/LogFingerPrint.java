@@ -35,17 +35,17 @@ public class LogFingerPrint{
 		isEmpty = true;
 
 		if (splits != null && splits.length >= 11) {
-			this.request_time = Long.valueOf(splits[0]);
-			this.ip = StringUtils.parseLong(splits[1]);
-			this.guid = Long.parseLong(splits[2]);
-			this.browser_code = StringUtils.parseInt(splits[3]);
+			this.request_time =StringUtil.longStr(splits[0]);
+			this.ip = StringUtil.longStr(splits[1]);
+			this.guid = StringUtil.longStr(splits[2]);
+			this.browser_code = StringUtil.intStr(splits[3]);
 			this.brower_ver = splits[4];
 			this.fps = splits[5];
 			this.user_agent = splits[6];
-			this.create_time = StringUtils.parseLong(splits[7]);
-			this.src = StringUtils.parseInt(splits[8]);
+			this.create_time = StringUtil.longStr(splits[7]);
+			this.src = StringUtil.intStr(splits[8]);
 			this.referer = splits[9];
-			this.cov = StringUtils.parseInt(splits[10]);
+			this.cov = StringUtil.intStr(splits[10]);
 			try {
 				if (splits.length == 12) {
 					this.extraField = splits[11];
