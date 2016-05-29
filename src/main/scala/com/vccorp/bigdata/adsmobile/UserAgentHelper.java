@@ -7,16 +7,10 @@ import net.sf.uadetector.service.UADetectorServiceFactory;
 
 public class UserAgentHelper {
 
-    private String userAgentString;
-
-    public UserAgentHelper(String userAgentString){
-        this.userAgentString = userAgentString;
-    }
-
-    public String getOsVersion() {
+    public static String getOsVersion(String userAgentString) {
 
         UserAgentStringParser parser = UADetectorServiceFactory.getCachingAndUpdatingParser();
-        ReadableUserAgent readableUserAgent= parser.parse(this.userAgentString);
+        ReadableUserAgent readableUserAgent= parser.parse(userAgentString);
 
         OperatingSystem os = readableUserAgent.getOperatingSystem();
 
@@ -27,7 +21,7 @@ public class UserAgentHelper {
 
 
         String uaString = "Opera/9.80 (Android; Opera Mini/11.0.1912/37.8233; U; vi) Presto/2.12.423 Version/12.16\thttp://mangago.vn/landing";
-        String version= new UserAgentHelper(uaString).getOsVersion();
+        String version=  getOsVersion(uaString);
 
         System.out.println("=====" + version + "========");
 

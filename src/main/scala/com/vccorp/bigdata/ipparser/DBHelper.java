@@ -67,7 +67,7 @@ public class DBHelper {
                     "value (?, ?, ?, ?, ?, ?, ?);";
             String sqlQueryIOS = "INSERT INTO cpi_matcher.clickIOS(id, appId, ipAddress, deviceId, osVersion, modelName, brandName) " +
                     "value (?, ?, ?, ?, ?, ?, ?);";
-            String sqlQueryWP = "INSERT INTO cpi_matcher.clickWp(id, appId, ipAddress, deviceId, osVersion, modelName, brandName) " +
+            String sqlQueryWP = "INSERT INTO cpi_matcher.clickWP(id, appId, ipAddress, deviceId, osVersion, modelName, brandName) " +
                     "value (?, ?, ?, ?, ?, ?, ?);";
 
             try {

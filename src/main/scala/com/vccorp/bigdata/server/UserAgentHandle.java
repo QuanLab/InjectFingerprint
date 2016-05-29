@@ -17,9 +17,8 @@ public class UserAgentHandle implements UserAgentService.Iface{
             System.out.println("Found in cache");
             return userAgenParsed;
         }
-        UserAgentParser userAgentParser = new UserAgentParser(userAgentString);
 
-        userAgenParsed = userAgentParser.getUserAgentParsedToString();
+        userAgenParsed = UserAgentParser.getUserAgentString(userAgentString);
 
         MatchingCPIServer.lruCache.set(userAgentString, userAgenParsed);
 

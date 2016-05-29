@@ -1,10 +1,14 @@
 package com.vccorp.bigdata.adsmobile;
 
-import com.vccorp.bigdata.client.MatchingCPIClient;
+import com.vccorp.bigdata.LRUCache.LRUCache;
 import com.vccorp.bigdata.ipparser.DBHelper;
+import com.vccorp.bigdata.threadpool.TaskParseClick;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -14,6 +18,8 @@ public class AnalystClick extends DBHelper {
 
     private static final int MAX_SIZE_BATCH = 1000;
     private static final String ANDROID = "Android", IOS = "iOS", WINDOWS_PHONE = "Windows Phone OS";
+
+    private static LRUCache lruCache = new LRUCache(10000);
 
     public AnalystClick() {
 
@@ -91,7 +97,11 @@ public class AnalystClick extends DBHelper {
 
         ArrayList<String> listFile = FileUtil.getListFile("/home/quanpv/Database/LogClick/");
 
+        Collections.sort(listFile);
+
         for (String file : listFile) {
+
+            System.out.println(file);
 
             lines = FileUtil.readFile(file);
 
@@ -106,7 +116,7 @@ public class AnalystClick extends DBHelper {
                 record.addElement(ipAddress);
 
                 try {
-                    userAgentParsed = MatchingCPIClient.getUserAgentParsed(mobileClickParser.getUserAgent());
+                    userAgentParsed = getUserAgentParsedFromCache(mobileClickParser.getUserAgent());
                     splits = userAgentParsed.split("\t");
 
                     try{
@@ -137,7 +147,6 @@ public class AnalystClick extends DBHelper {
                     } catch(Exception e){
                         brandName = "-1";
                     }
-
                     record.addElement(devideId);
 //                    record.addElement(osType);
                     record.addElement(osVersion);
@@ -197,6 +206,7 @@ public class AnalystClick extends DBHelper {
         DBHelper.batchInsertRecordsIntoTableClick(batchRecordsWp, 3);
     }
 
+
     /**
      * check if log is an installation of application
      **/
@@ -214,19 +224,24 @@ public class AnalystClick extends DBHelper {
         return false;
     }
 
+    private static synchronized String getUserAgentParsedFromCache(String userAgentString) {
 
-    public static void printBatch(Vector batchRecords) {
+//        System.out.println("Parsing user agent started");
+        String userAgenParsed = null;
 
-        for (int i = 0; i < batchRecords.size(); i++) {
-            Vector record = (Vector) batchRecords.get(i);
-            System.out.print("--" + record.get(0) + "\t");
-            System.out.print("--" + record.get(1) + "\t");
-            System.out.print("--" + record.get(2) + "\t");
-            System.out.print("--" + record.get(3) + "\t");
-            System.out.print("--" + record.get(4) + "\t");
-            System.out.print("--" + record.get(5) + "\t");
-            System.out.print("--" + record.get(6) + "\n");
+        try {
+            userAgenParsed = lruCache.get(userAgentString);
+        } catch (NullPointerException npe) {
         }
+
+        if (userAgenParsed != null) {
+            System.out.println("Found in cache");
+            return userAgenParsed;
+        }
+        userAgenParsed = UserAgentParser.getUserAgentString(userAgentString);
+        lruCache.set(userAgentString, userAgenParsed);
+        return userAgenParsed;
     }
+
 
 }
