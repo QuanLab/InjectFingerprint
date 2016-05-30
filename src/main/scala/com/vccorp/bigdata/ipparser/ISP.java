@@ -9,10 +9,10 @@ import java.util.Vector;
 
 public class ISP {
 
-    Vector vectorCarrier;
+    public static Vector vectorCarrier   = getDataCarrier();
 
     public ISP(){
-        vectorCarrier = getDataCarrier();
+
     }
 
 
@@ -30,7 +30,7 @@ public class ISP {
             if(subnetUtils.getInfo().isInRange(ipAddress)){
                 System.out.println(vectorCarrier.get(i));
                 System.out.println(subnetUtils.getInfo().getLowAddress() + " -----> " + subnetUtils.getInfo().getHighAddress());
-                System.out.println("Found: " + record.get(1).toString());
+//                System.out.println("Found: " + record.get(1).toString());
                 return record.get(1).toString();
             };
 
@@ -38,7 +38,40 @@ public class ISP {
         return null;
     }
 
-    public Vector getDataCarrier(){
+    public boolean isSameSubnet(String ip1, String ip2){
+
+        try{
+            String subnet =  getSubnet(ip1);
+            SubnetUtils subnetUtils = new SubnetUtils(subnet);
+            return subnetUtils.getInfo().isInRange(ip2);
+
+        } catch (Exception e){
+            System.out.println(e);
+            return  false;
+        }
+    }
+
+    public String getSubnet(String ipAddress){
+
+        SubnetUtils subnetUtils;
+
+        for(int i = 0; i< vectorCarrier.size(); i++){
+
+            Vector record = (Vector) vectorCarrier.get(i);
+
+            String subnet = (String)record.get(2);
+
+            subnetUtils = new SubnetUtils(subnet);
+
+            if(subnetUtils.getInfo().isInRange(ipAddress)){
+                return record.get(2).toString();
+            };
+
+        }
+        return null;
+    }
+
+    public static Vector getDataCarrier(){
 
         DBHelper.connectDB();
 

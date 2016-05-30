@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 public class FPS {
 
 //	final static Logger logger = Logger.getLogger(FPS.class);
+	private String value;
 
 	private boolean isEmpty;
 	private int os_type;// 1 is android 2 is IOS
@@ -38,15 +39,15 @@ public class FPS {
 		this.isEmpty = true;
 
 		try {
-			decode(value);
+			this.value = decode(value);
 		} catch (Exception e) {
 			System.out.println("Cannot decode " + e);
 		}
 
-		String[] splits = null;
+		String[] splits = new String[17];
 
 		if(value!=null){
-			splits= value.split(";");
+			splits= this.value.split(";");
 			size = splits.length;
 		}
 

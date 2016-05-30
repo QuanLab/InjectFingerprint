@@ -2,6 +2,7 @@ package com.vccorp.bigdata.adsmobile;
 
 import com.vccorp.bigdata.LRUCache.LRUCache;
 import com.vccorp.bigdata.ipparser.DBHelper;
+import com.vccorp.bigdata.ipparser.ISP;
 import com.vccorp.bigdata.threadpool.TaskParseClick;
 
 import java.util.ArrayList;
@@ -27,9 +28,26 @@ public class AnalystClick extends DBHelper {
 
     public static void main(String[] args) {
 
-        writeClickRecordToDB();
+//        writeClickRecordToDB();
+//        filterClickFromRawData();
 
+        int cnt = 0;
+
+        ArrayList<String> listFile = FileUtil.getListFile("/home/quanpv/Database/Install/");
+
+        for (String file : listFile) {
+
+            ArrayList<String> installs = FileUtil.readFile(file);
+
+            for (String install : installs) {
+
+                DBHelper.batchInsertInstall(install, getClickRelevant(install));
+            }
+            System.out.println(cnt);
+        }
+        System.out.println(cnt);
     }
+
 
     /**
      * filter mobile install game from data (open, close, update, install)
@@ -38,12 +56,9 @@ public class AnalystClick extends DBHelper {
 
     public static void filterClickFromRawData() {
 
-        String filePath = "/home/quanpv/Database/LogInstall/part-";
         String fileName;
-        long countLines = 0;
-        int countFiles = 0;
         ArrayList<String> lines;
-        ArrayList<String> lineInstall = new ArrayList<String>(10000);
+        ArrayList<String> linesInstall = new ArrayList<String>();
 
         ArrayList<String> listFile = FileUtil.getListFile("/home/quanpv/Database/3.158/");
 
@@ -54,27 +69,15 @@ public class AnalystClick extends DBHelper {
             for (String line : lines) {
 
                 if (isMobileInstall(line)) {
-
-                    lineInstall.add(line);
-                    countLines++;
-
-                    if (countLines >= 10000) {
-                        System.out.println("Write to file...........................");
-                        fileName = filePath + String.format("%05d", countFiles);
-                        FileUtil.writeToFile(lineInstall, fileName);
-                        countFiles++;
-                        countLines = 0;
-                        lineInstall = new ArrayList<String>(10000);
-                    }
-
+                    linesInstall.add(line);
                 }
             }
+            fileName = file.replace("3.158", "Install");
+            System.out.println("Write to file" + fileName);
+
+            FileUtil.writeToFile(linesInstall, fileName);
+            linesInstall = new ArrayList<String>();
         }
-
-        fileName = filePath + String.format("%05d", countFiles);
-        FileUtil.writeToFile(lineInstall, fileName);
-
-        System.out.println(countLines);
     }
 
 
@@ -215,23 +218,21 @@ public class AnalystClick extends DBHelper {
 
         LogFingerPrint logFingerPrint = new LogFingerPrint(click);
         FPS fps = new FPS(logFingerPrint.getFps());
-
-        if (logFingerPrint.getSrc() == 3 && fps.getAction() == 1) {
-
+        if (logFingerPrint.getSrc() == 3 && fps.getAction() == -1) {
             return true;
         }
-
         return false;
     }
 
     private static synchronized String getUserAgentParsedFromCache(String userAgentString) {
 
-//        System.out.println("Parsing user agent started");
+//        System.out.println("Start parse user agent string");
         String userAgenParsed = null;
 
         try {
             userAgenParsed = lruCache.get(userAgentString);
         } catch (NullPointerException npe) {
+            System.out.println("getUserAgentParsedFromCache" + npe);
         }
 
         if (userAgenParsed != null) {
@@ -241,6 +242,43 @@ public class AnalystClick extends DBHelper {
         userAgenParsed = UserAgentParser.getUserAgentString(userAgentString);
         lruCache.set(userAgentString, userAgenParsed);
         return userAgenParsed;
+    }
+
+
+    public static Vector getClickRelevant (String logInstall) {
+
+        Vector clickRelevant = new Vector();
+
+        LogFingerPrint logFingerPrint = new LogFingerPrint(logInstall);
+        FPS fps = new FPS(logFingerPrint.getFps());
+
+        String appId = fps.getApp_id();
+        int osType = fps.getOs_type();
+        String osVersion = fps.getOs_version();
+        String modelName = fps.getDevice_model();
+        String ipInstall = fps.getIp_address();
+
+        Vector result = getClickRecords(appId, osType, osVersion, modelName, null);
+
+        String ipClick;
+
+        if(result!=null){
+
+            Vector record;
+            for(int i=0; i<result.size(); i++){
+
+                record = (Vector)result.get(i);
+                ipClick = (String)record.get(2);
+
+                if(new ISP().isSameSubnet(ipClick, ipInstall)){
+                    clickRelevant.add((String)record.get(0));
+                }
+
+            }
+        } else {
+            System.out.println("Not found result");
+        }
+        return clickRelevant;
     }
 
 

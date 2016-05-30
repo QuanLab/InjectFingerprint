@@ -51,6 +51,9 @@ public class FileUtil {
         BufferedWriter output = null;
         try {
             File file = new File(fileName);
+            if(!file.exists()){
+                file.createNewFile();
+            }
             output = new BufferedWriter(new FileWriter(file));
             for (String line: lines){
                 output.write(line + System.getProperty("line.separator"));
